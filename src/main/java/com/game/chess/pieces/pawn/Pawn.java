@@ -18,6 +18,7 @@ public class Pawn implements Piece, Exportable<PawnExporter> {
         this.currentPosition = currentPosition;
     }
 
+
     @Override
     public void addRule(Rule rule) {
         rules.add(rule);
@@ -50,6 +51,7 @@ public class Pawn implements Piece, Exportable<PawnExporter> {
 
     @Override
     public String toString(PawnExporter exporter) {
-        return null;
+        exporter.fetchPawnPosition(currentPosition);
+        return exporter.toString();
     }
 }

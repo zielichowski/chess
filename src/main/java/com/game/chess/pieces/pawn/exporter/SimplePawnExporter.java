@@ -19,6 +19,6 @@ public class SimplePawnExporter implements PawnExporter {
 
     @Override
     public String toString() {
-        return "PawnPosition{" + toExport + '\'' + '}';
+        return "PawnPosition{" + toExport + '}';
     }
 }

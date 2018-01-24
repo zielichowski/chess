@@ -103,14 +103,15 @@ public class PawnTest {
     }
 
     @Test
-    public void successfullyMoveOnGivenPosition(){
+    public void successfullyMoveOnGivenPosition() {
         Position position = new Position(1, 2);
-        Piece piece = new Pawn(position);
+        Pawn piece = new Pawn(position);
         piece.addRule(new OneStepForwardRule());
 
-        piece.move(new Position(1,3));
+        piece.move(new Position(1, 3));
 
-//        Assert.assertEquals();
+        Assert.assertEquals("PawnPosition{1,3}", piece.toString(new SimplePawnExporter())
+        );
 
     }
 
