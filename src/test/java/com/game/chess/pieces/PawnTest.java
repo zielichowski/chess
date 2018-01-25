@@ -4,7 +4,6 @@ import com.game.chess.board.Board;
 import com.game.chess.board.tiles.Position;
 import com.game.chess.board.tiles.exporter.SimplePositionExporter;
 import com.game.chess.pieces.pawn.Pawn;
-import com.game.chess.pieces.pawn.exporter.PawnExporter;
 import com.game.chess.pieces.pawn.exporter.SimplePawnExporter;
 import com.game.chess.pieces.pawn.rules.AttackRule;
 import com.game.chess.pieces.pawn.rules.OneStepForwardRule;
@@ -110,9 +109,38 @@ public class PawnTest {
 
         piece.move(new Position(1, 3));
 
-        Assert.assertEquals("PawnPosition{1,3}", piece.toString(new SimplePawnExporter())
-        );
+        Assert.assertEquals("PawnPosition{1,3}", piece.toString(new SimplePawnExporter()));
 
+    }
+
+    @Test
+    public void successfullyMoveOnGivenPositionTwice(){
+        Position position = new Position(1, 2);
+        Pawn piece = new Pawn(position);
+        piece.addRule(new OneStepForwardRule());
+
+        piece.move(new Position(1, 3));
+        piece.move(new Position(1, 4));
+
+        Assert.assertEquals("PawnPosition{1,4}", piece.toString(new SimplePawnExporter()));
+    }
+
+    @Test
+    public void pawnCannotJump(){
+        Position position = new Position(1, 1);
+        Pawn piece = new Pawn(position);
+        piece.addRule(new TwoStepForwardRule(false));
+
+        Board board = new Board();
+        board.addPiece(piece,position);
+
+        Position blockingPawnPos = new Position(1,2);
+        board.addPiece(new Pawn(blockingPawnPos),blockingPawnPos);
+
+        List<Position> positions = board.checkPossibleMovements(piece);
+
+
+       Assert.assertEquals(0, positions.size());
     }
 
 }

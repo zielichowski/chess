@@ -13,6 +13,10 @@ public class TwoStepForwardRule implements Rule {
 
     @Override
     public boolean apply(Position currentPosition, Position destinationPosition) {
+        if(hasToSkip?){
+            return false;
+        }
+
         if (alreadyMoved || destinationPosition.isOccupied()) {
             return false;
         } else {

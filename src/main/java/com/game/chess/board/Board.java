@@ -29,6 +29,7 @@ public class Board {
 
     public void addPiece(Piece piece, Position position) {
         piecesWithPositions.put(piece, position);
+        occupyPosition(position);
     }
 
     public Piece selectPiece(Piece piece) {
@@ -37,12 +38,29 @@ public class Board {
 
     public List<Position> checkPossibleMovements(Piece piece) {
         List<Position> moves = new ArrayList<>();
+        Position piecePosition = piecesWithPositions.get(piece);
+
+
         for (Position position : positions) {
             if (piece.canMove(position)) {
-                moves.add(position);
+                if (!hasToSkip(piecePosition, position)) {
+                    moves.add(position);
+                } else {
+                    if (piece.isSkipable()) {
+                        moves.add(position);
+                    }
+                }
             }
 
         }
         return moves;
+    }
+
+    private boolean hasToSkip(Position piecePosition, Position position) {
+
+    }
+
+    private void occupyPosition(Position position) {
+        positions.get(positions.indexOf(position)).occupy();
     }
 }
