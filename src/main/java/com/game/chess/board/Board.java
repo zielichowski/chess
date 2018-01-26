@@ -37,27 +37,49 @@ public class Board {
     }
 
     public List<Position> checkPossibleMovements(Piece piece) {
-        List<Position> moves = new ArrayList<>();
-        Position piecePosition = piecesWithPositions.get(piece);
-
-
+        List<Position> potentiallyMoves = new ArrayList<>();
         for (Position position : positions) {
             if (piece.canMove(position)) {
-                if (!hasToSkip(piecePosition, position)) {
-                    moves.add(position);
-                } else {
-                    if (piece.isSkipable()) {
-                        moves.add(position);
-                    }
-                }
+                potentiallyMoves.add(position);
             }
 
         }
-        return moves;
+
+        List<Position> finalMoves = filterPotentiallyMoves(potentiallyMoves, piece);
+
+        return potentiallyMoves;
     }
 
-    private boolean hasToSkip(Position piecePosition, Position position) {
+    private List<Position> filterPotentiallyMoves(List<Position> potentiallyMoves, Piece piece) {
 
+        List<Position> finalMoves = new ArrayList<>(potentiallyMoves.size());
+
+        Position piecePosition = piecesWithPositions.get(piece);
+
+        for (Position potentiallyMove : potentiallyMoves) {
+            if (!causeCheck(piecePosition, potentiallyMove)) {
+                if (!hasToSkip(piecePosition, potentiallyMove)) {
+                    checkOccupation(finalMoves, potentiallyMove);
+                } else {
+                    if (canSkip(piece)) {
+                        checkOccupation(finalMoves, potentiallyMove);
+                    }
+                }
+            }
+        }
+
+
+        return null;
+    }
+
+    private void checkOccupation(List<Position> finalMoves, Position potentiallyMove) {
+        if (!isOccupied(potentiallyMove)) {
+            finalMoves.add(potentiallyMove);
+        } else {
+            if (!occupiedByThisSameColor(potentiallyMove)) {
+                finalMoves.add(potentiallyMove);
+            }
+        }
     }
 
     private void occupyPosition(Position position) {
